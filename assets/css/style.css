@@ -27,6 +27,7 @@ body {
     padding: 20px;
     background-color: aquamarine;
     border-radius: 15px;
+    color: rgb(14, 80, 20);
     /* z-index: 10; */
 
     
@@ -81,6 +82,19 @@ h1 {
     
 
 
+}
+
+span {
+    font-size: 22px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    
+}
+
+.text-centered {
+    width: 100%;
+    text-align: center;
+    margin-top: 6px;
+    margin-bottom: 6px;
 }
 
 @media screen and (max-width: 424px) {
