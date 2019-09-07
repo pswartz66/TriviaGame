@@ -70,7 +70,7 @@ function countDown() {
     if (isStartClicked) {
 
         
-
+        // PUT THIS INSIDE A FUNCTION THAT GENERATES A QUESTION AND RANDOMIZES THE ANSWER ORDER
         $("#time-remaining").text("Time Remaining: " + count);
 
 
