@@ -5,16 +5,14 @@ body {
 
 }
 
-.navbar {
-    
-    background-color: aqua;
-    
+.container {
+    margin-top: 20px;
+    overflow: none;
 }
 
 .header-content {
     margin-top: 20px;
     height: 80px;
-    
     
     
 }
@@ -25,6 +23,9 @@ body {
     padding: 20px;
     background-color: aquamarine;
     border-radius: 15px;
+    /* z-index: 10; */
+
+    
 }
 
 #starter-button {
@@ -46,3 +47,25 @@ body {
 h1 {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+
+.main-game-container {
+
+    
+    
+    height: 400px;
+    background-color: rgb(43, 13, 177);
+    border-radius: 15px;
+    margin-top: 5px;
+
+    
+
+}
+
+.game-content {
+
+    
+
+}
+
+
