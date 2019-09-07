@@ -7,17 +7,21 @@ body {
 
 .container {
     margin-top: 20px;
-    overflow: none;
+    
 }
 
 .header-content {
+    
     margin-top: 20px;
     height: 80px;
+    margin-bottom: 20px;
+    
     
     
 }
 
 .header-head {
+    
     text-align: center;
     width: 100%;
     padding: 20px;
@@ -51,21 +55,42 @@ h1 {
 
 .main-game-container {
 
-    
-    
-    height: 400px;
+    height: 420px;
+
     background-color: rgb(43, 13, 177);
     border-radius: 15px;
-    margin-top: 5px;
-
     
+    overflow: none;
+
 
 }
+
+.spaced-row {
+    
+    height: 60px;
+    
+}
+
 
 .game-content {
 
+    height: 400px;
+    border-radius: 10px;
+    margin: 10px -5px 0px -5px;
+    background-color: bisque;
     
+
 
 }
 
+@media screen and (max-width: 424px) {
+
+    .spaced-row {
+    
+        height: 140px;
+        
+    }
+
+
+}
 
