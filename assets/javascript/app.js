@@ -5,10 +5,7 @@ var queryURL = "https://opentdb.com/api.php?amount=10&category=18&difficulty=med
 
 var questions = [];
 var answers = [];
-
-var triviaObj = {
-
-}
+var incorrectAnswers = [];
 
 var calledAPI = false;
 $.ajax({
@@ -20,19 +17,22 @@ $.ajax({
     for (let i = 0; i < response.results.length; i++) {
 
         questions.push(response.results[i].question);
+        
         answers.push(response.results[i].correct_answer);
+
+        incorrectAnswers.push(response.results[i].incorrect_answers[0, 1, 2]);
 
     }
 
     console.log(questions);
     console.log(answers);
-
+    console.log(incorrectAnswers);
 
     calledAPI = true;
 });
 
 
-
+/* ------------------------------------ */
 
 
 
@@ -43,16 +43,17 @@ var isStartClicked = false;
 var count = 20;
 
 
-// display start button
+// when start button is clicked run this code
 $("#start-button").on("click", function () {
     isStartClicked = true;
 
     // when start button is clicked, hide it and begin counter
     $("#start-button").hide();
 
-    
+    start();
 
 });
+
 
 
 // function to begin the counting for the start of the first question
@@ -68,14 +69,39 @@ function countDown() {
     // if start button is clicked
     if (isStartClicked) {
 
-        count--;
+        
 
         $("#time-remaining").text("Time Remaining: " + count);
+
+
+        $('#time-remaining').append('<tbody></tbody>')
+        $('#time-remaining > tbody:last-child').append('<tr></tr>');
+        $('#time-remaining > tbody > tr:last-child').text(questions[0]);
+
+        $('#time-remaining > tbody:last-child').append('<br></brr>');
+
+
+        $('#time-remaining > tbody:last-child').append('<tr></tr>');
+        $('#time-remaining > tbody > tr:last-child').text(answers[0]);
+
+        $('#time-remaining > tbody:last-child').append('<tr></tr>');
+        $('#time-remaining > tbody > tr:last-child').text(incorrectAnswers[0]);
+
+        $('#time-remaining > tbody:last-child').append('<tr></tr>');
+        $('#time-remaining > tbody > tr:last-child').text(incorrectAnswers[1]);
+
+        $('#time-remaining > tbody:last-child').append('<tr></tr>');
+        $('#time-remaining > tbody > tr:last-child').text(incorrectAnswers[2]);
+
+
+
+        // decrement by 1
+        count--;
 
     }
 
 
-    if (count === 0) {
+    if (count === -1) {
         stop();
         console.log("times up")
         
