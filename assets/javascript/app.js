@@ -60,8 +60,6 @@ var questionCount = 10;
 
 function generateQuestionAndAnswer(){
      
-    
-
     // PUT THIS INSIDE A FUNCTION THAT GENERATES A QUESTION AND RANDOMIZES THE ANSWER ORDER
     $("#time-remaining").text("Time Remaining: " + count);
 
@@ -74,19 +72,19 @@ function generateQuestionAndAnswer(){
     $('#time-remaining > tbody:last-child').append('<br></brr>');
 
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
-    $('#time-remaining > tbody > tr').attr('id', 'answer');
+    $('#time-remaining > tbody > tr').attr('id', 'answer' + answerCounter);
     $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter]);
 
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
-    $('#time-remaining > tbody > tr').attr('id', 'answer');
+    $('#time-remaining > tbody > tr').attr('id', 'answer' + answerCounter + 1);
     $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter + 1]);
 
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
-    $('#time-remaining > tbody > tr').attr('id', 'answer');
+    $('#time-remaining > tbody > tr').attr('id', 'answer' + answerCounter + 2);
     $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter + 2]);
 
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
-    $('#time-remaining > tbody > tr').attr('id', 'answer');
+    $('#time-remaining > tbody > tr').attr('id', 'answer' + answerCounter + 3);
     $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter + 3]);
 
 
@@ -142,6 +140,32 @@ function start() {
 // decrement by 1 second for 20 seconds
 function countDown() {
 
+
+    if (count === -1) {
+        stop();
+        console.log("times up")
+
+        // log the users guess here
+
+
+        // clear the question and answer field
+        clearQuestionAndAnswer();
+
+        // set count back to 5
+        count = 5;
+
+
+        answerCounter += 4;
+        questionCounter += 1;
+        generateQuestionAndAnswer();
+
+        start();
+        
+        
+    }
+
+
+
     // if start button is clicked
     if (isStartClicked) {
 
@@ -167,29 +191,16 @@ function countDown() {
     }
 
     
-
-    if (count === -1) {
+    if (questionCounter === questionCount) {
         stop();
-        console.log("times up")
+        $("#time-remaining").text("GAME OVER!");
 
-        // log the users guess here
-
-
-        // clear the question and answer field
-        clearQuestionAndAnswer();
-
-        // set count back to 5
-        count = 5;
+        // add user score here below the game over text
 
 
-        answerCounter += 4;
-        questionCounter += 1;
-        generateQuestionAndAnswer();
-
-        start();
-        
-        
     }
+
+    
 
 }
 
