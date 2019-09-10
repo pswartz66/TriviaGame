@@ -94,6 +94,9 @@ function generateQuestionAndAnswer(){
     $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter + 3]);
 
 
+    // add 'answer' id to all tr tags in in tbody
+    $('#time-remaining > tbody > tr').attr('id', 'answer');
+
 
 
 
@@ -103,17 +106,16 @@ function generateQuestionAndAnswer(){
         $(this).css("background-color", "");
     });
 
+    
+
+
     /* $("tr").on("click", function(){
 
         console.log("you clicked");
     
     }) */
     
-/*  $('#time-remaining > tbody > tr:nth-child(1)').attr('id', 'answerOne');
-    $('#time-remaining > tbody > tr:nth-child(2)').attr('id', 'answerTwo');
-    $('#time-remaining > tbody > tr:nth-child(3)').attr('id', 'answerThree');
-    $('#time-remaining > tbody > tr:nth-child(4)').attr('id', 'answerFour');
- */
+
 
 
 };
