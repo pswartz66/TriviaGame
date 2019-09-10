@@ -10,38 +10,53 @@ var incorrectAnswers = [];
 var calledAPI = false;
 
 
+var correctAnswer = '';
+var incorrectOne = '';
+var incorrectTwo = '';
+var incorrectThree = '';
 
 $.ajax({
     url: queryURL,
     method: "GET"
-}).then(function(response){
-    // console.log(response);
+}).then(function (response) {
+    console.log(response);
 
     for (let i = 0; i < response.results.length; i++) {
 
         questions.push(response.results[i].question);
-        
+
         var randomNum = Math.floor(Math.random() * 3);
 
-        var randomNumers = [0, 1, 2];
+
+        correctAnswer = response.results[i].correct_answer;
+        incorrectOne = response.results[i].incorrect_answers[0];
+        incorrectTwo = response.results[i].incorrect_answers[1];
+        incorrectThree = response.results[i].incorrect_answers[2];
+
+
+        var myArray = [correctAnswer, incorrectOne, incorrectTwo, incorrectThree];
+        // change order of answers here:
+
 
 
         answers.push(response.results[i].correct_answer,
-                    response.results[i].incorrect_answers[0],
-                    response.results[i].incorrect_answers[1],
-                    response.results[i].incorrect_answers[2]
-                    ); 
-        
+            response.results[i].incorrect_answers[0],
+            response.results[i].incorrect_answers[1],
+            response.results[i].incorrect_answers[2]
+        );
+
     }
 
 
     for (let i = 0; i < answers.length; i++) {
-        // console.log(answers[i]);
+        console.log(answers[i]);
 
     }
 
-    
+
     calledAPI = true;
+
+    // console.log(myArray);
 
 });
 
@@ -59,8 +74,8 @@ var answerCounter = 0;
 var questionCounter = 0;
 var questionCount = 10;
 
-function generateQuestionAndAnswer(){
-     
+function generateQuestionAndAnswer() {
+
     // PUT THIS INSIDE A FUNCTION THAT GENERATES A QUESTION AND RANDOMIZES THE ANSWER ORDER
     $("#time-remaining").text("Time Remaining: " + count);
 
@@ -76,10 +91,10 @@ function generateQuestionAndAnswer(){
 
     // -------------------------------------------------------------------------- //
 
-
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
     $('#time-remaining > tbody > tr:last-child').attr('id', 'answer');
     $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter]);
+    console.log(answerCounter);
 
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
     $('#time-remaining > tbody > tr:last-child').attr('id', 'answer');
@@ -98,23 +113,38 @@ function generateQuestionAndAnswer(){
     $('#time-remaining > tbody > tr').attr('id', 'answer');
 
 
+    // if the correct answer is clicked then do X
+    $('#time-remaining > tbody > tr').on('click', function(){
+        if ($(this).text() === answers[answerCounter]){
+
+            clearQuestionAndAnswer();
+            $('#time-remaining').append('<div></div>')
+            $('#time-remaining').text("CORRECT");
+            console.log("clicked the correct answer");
+
+            // pause for 3 seconds and then display next question
+            setTimeout(clearQuestionAndAnswer, 3000);
 
 
-    $('#time-remaining > tbody').on('mouseenter', '#answer', function(){
+
+        } else {
+
+            clearQuestionAndAnswer();
+            $('#time-remaining').append('<div></div>')
+            $('#time-remaining').text("WRONG ANSWER");
+            console.log("wrong Answer");
+            
+        }
+
+    });
+    
+
+    // highlight the answers when the user hover's over them
+    $('#time-remaining > tbody').on('mouseenter', '#answer', function () {
         $(this).css("background-color", "blue");
-    }).on('mouseleave', '#answer', function(){
+    }).on('mouseleave', '#answer', function () {
         $(this).css("background-color", "");
     });
-
-    
-
-
-    /* $("tr").on("click", function(){
-
-        console.log("you clicked");
-    
-    }) */
-    
 
 
 
@@ -124,16 +154,14 @@ function generateQuestionAndAnswer(){
 
 
 
-
-
-
 // function to clear the Q & A section
-function clearQuestionAndAnswer(){
+function clearQuestionAndAnswer() {
 
+    $('#time-remaining > thead').empty();
     $('#time-remaining > tbody').empty();
 
-}
 
+}
 
 
 
@@ -189,8 +217,8 @@ function countDown() {
         generateQuestionAndAnswer();
 
         start();
-        
-        
+
+
     }
 
 
@@ -198,10 +226,10 @@ function countDown() {
     // if start button is clicked
     if (isStartClicked) {
 
-        
+
         // call generate question and answer function
         generateQuestionAndAnswer();
-        
+
 
         // decrement by 1
         count--;
@@ -212,14 +240,14 @@ function countDown() {
 
         // call generate question and answer function
         generateQuestionAndAnswer();
-        
+
 
         // decrement by 1
         count--;
 
     }
 
-    
+
     if (questionCounter === questionCount) {
         stop();
         $("#time-remaining").text("GAME OVER!");
@@ -229,7 +257,7 @@ function countDown() {
 
     }
 
-    
+
 
 }
 
@@ -239,7 +267,7 @@ function stop() {
     // clear the time interval
     clearInterval(intervalId);
 
-    
+
 
     // set start button click back to zero
     isStartClicked = false;
