@@ -15,15 +15,16 @@ $.ajax({
     url: queryURL,
     method: "GET"
 }).then(function(response){
-    console.log(response);
+    // console.log(response);
 
     for (let i = 0; i < response.results.length; i++) {
 
         questions.push(response.results[i].question);
         
-        var random = Math.floor(Math.random() * 3)
+        var randomNum = Math.floor(Math.random() * 3);
 
-        var randNum = [0, 1, 2];
+        var randomNumers = [0, 1, 2];
+
 
         answers.push(response.results[i].correct_answer,
                     response.results[i].incorrect_answers[0],
@@ -35,7 +36,7 @@ $.ajax({
 
 
     for (let i = 0; i < answers.length; i++) {
-        console.log(answers[i]);
+        // console.log(answers[i]);
 
     }
 
@@ -46,8 +47,8 @@ $.ajax({
 
 
 
-console.log(questions);
-console.log(answers);
+// console.log(questions);
+// console.log(answers);
 
 
 
@@ -64,38 +65,64 @@ function generateQuestionAndAnswer(){
     $("#time-remaining").text("Time Remaining: " + count);
 
 
-    $('#time-remaining').append('<tbody></tbody>')
-    $('#time-remaining > tbody:last-child').append('<tr></tr>');
-    $('#time-remaining > tbody > tr').addClass('question');
-    $('#time-remaining > tbody > tr:last-child').text(questions[questionCounter]);
+    $('#time-remaining').append('<thead></thead>');
+    $('#time-remaining > thead').append('<tr></tr>');
+    $('#time-remaining > thead > tr').addClass('question');
+    $('#time-remaining > thead > tr:last-child').text(questions[questionCounter]);
 
+
+    $('#time-remaining').append('<tbody></tbody>');
     $('#time-remaining > tbody:last-child').append('<br></brr>');
 
+    // -------------------------------------------------------------------------- //
+
+
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
-    $('#time-remaining > tbody > tr').attr('id', 'answer' + answerCounter);
+    $('#time-remaining > tbody > tr:last-child').attr('id', 'answer');
     $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter]);
 
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
-    $('#time-remaining > tbody > tr').attr('id', 'answer' + answerCounter + 1);
+    $('#time-remaining > tbody > tr:last-child').attr('id', 'answer');
     $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter + 1]);
 
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
-    $('#time-remaining > tbody > tr').attr('id', 'answer' + answerCounter + 2);
+    $('#time-remaining > tbody > tr').attr('id', 'answer');
     $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter + 2]);
 
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
-    $('#time-remaining > tbody > tr').attr('id', 'answer' + answerCounter + 3);
+    $('#time-remaining > tbody > tr').attr('id', 'answer');
     $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter + 3]);
 
 
 
-    /* $('#time-remaining > tbody > tr').hover(function(){
-        $(this).css("background-color", "blue");
-    }); */
 
+
+    $('#time-remaining > tbody').on('mouseenter', '#answer', function(){
+        $(this).css("background-color", "blue");
+    }).on('mouseleave', '#answer', function(){
+        $(this).css("background-color", "");
+    });
+
+    /* $("tr").on("click", function(){
+
+        console.log("you clicked");
     
+    }) */
+    
+/*  $('#time-remaining > tbody > tr:nth-child(1)').attr('id', 'answerOne');
+    $('#time-remaining > tbody > tr:nth-child(2)').attr('id', 'answerTwo');
+    $('#time-remaining > tbody > tr:nth-child(3)').attr('id', 'answerThree');
+    $('#time-remaining > tbody > tr:nth-child(4)').attr('id', 'answerFour');
+ */
+
 
 };
+
+
+
+
+
+
 
 
 // function to clear the Q & A section
