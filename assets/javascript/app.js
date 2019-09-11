@@ -49,7 +49,7 @@ $.ajax({
 
 
     for (let i = 0; i < answers.length; i++) {
-        console.log(answers[i]);
+        // console.log(answers[i]);
 
     }
 
@@ -113,27 +113,65 @@ function generateQuestionAndAnswer() {
     $('#time-remaining > tbody > tr').attr('id', 'answer');
 
 
-    // if the correct answer is clicked then do X
+    // if the correct answer is clicked then display the correct answer count
     $('#time-remaining > tbody > tr').on('click', function(){
         if ($(this).text() === answers[answerCounter]){
 
+            // clear contents
             clearQuestionAndAnswer();
+            
+            // pause for 3 seconds and then display next question
+            stop();
+
+            correctCount+=1;
+
             $('#time-remaining').append('<div></div>')
             $('#time-remaining').text("CORRECT");
-            console.log("clicked the correct answer");
+            $('#time-remaining').append('<p>');
+            $('#time-remaining > p').text('Answered Correct: ' + correctCount);
 
-            // pause for 3 seconds and then display next question
-            setTimeout(clearQuestionAndAnswer, 3000);
-
-
-
-        } else {
-
-            clearQuestionAndAnswer();
-            $('#time-remaining').append('<div></div>')
-            $('#time-remaining').text("WRONG ANSWER");
-            console.log("wrong Answer");
             
+            setTimeout(whilePausedCorrect, 3000);
+            
+        // else if an incorrect answer is clicked then display incorrect answer count
+        } else if ($(this).text() !== answers[answerCounter]) {
+
+            // clear contents
+            clearQuestionAndAnswer();
+            
+            // pause for 3 seconds and then display next question
+            stop();
+
+            incorrectCount+=1;
+
+            $('#time-remaining').append('<div></div>')
+            $('#time-remaining').text("INCORRECT");
+            $('#time-remaining').append('<p>');
+            $('#time-remaining > p').text('Answered Incorrect: ' + incorrectCount);
+
+            setTimeout(whilePausedInCorrect, 3000);
+            
+        }
+        
+        // else no answer selected display incorrect
+        else {
+
+            // clear contents
+            clearQuestionAndAnswer();
+            
+            // pause for 3 seconds and then display next question
+            stop();
+
+            incorrectCount+=1;
+
+            $('#time-remaining').append('<div></div>')
+            $('#time-remaining').text("INCORRECT");
+            $('#time-remaining').append('<p>');
+            $('#time-remaining > p').text('Answered Incorrect: ' + incorrectCount);
+
+            setTimeout(whilePausedInCorrect, 3000);
+
+
         }
 
     });
@@ -150,8 +188,29 @@ function generateQuestionAndAnswer() {
 
 };
 
+var correctCount = 0;
+function whilePausedCorrect() {
 
+    $('#time-remaining > div:last-child').append("<p>");
+    $('#time-remaining > div > p:last-child').text("Correct Answer: " + correctCount);
 
+    answerCounter += 4;
+    questionCounter += 1;
+    start();
+
+};
+
+var incorrectCount = 0;
+function whilePausedInCorrect() {
+
+    $('#time-remaining > div:last-child').append("<p>");
+    $('#time-remaining > div > p:last-child').text("Correct Answer: " + incorrectCount);
+
+    answerCounter += 4;
+    questionCounter += 1;
+    start();
+
+};
 
 
 // function to clear the Q & A section
@@ -160,6 +219,7 @@ function clearQuestionAndAnswer() {
     $('#time-remaining > thead').empty();
     $('#time-remaining > tbody').empty();
 
+    
 
 }
 
@@ -180,7 +240,9 @@ $("#start-button").on("click", function () {
     // when start button is clicked, hide it and begin counter
     $("#start-button").hide();
 
+    
     start();
+
 
 });
 
@@ -189,14 +251,14 @@ $("#start-button").on("click", function () {
 
 // function to begin the counting for the start of the first question
 function start() {
-
+    count = 5;
+    // questionCounter += 1;
     intervalId = setInterval(countDown, 1000);
 
 }
 
 // decrement by 1 second for 20 seconds
 function countDown() {
-
 
     if (count === -1) {
         stop();
@@ -216,6 +278,7 @@ function countDown() {
         questionCounter += 1;
         generateQuestionAndAnswer();
 
+        
         start();
 
 
