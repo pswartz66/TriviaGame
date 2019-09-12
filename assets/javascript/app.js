@@ -9,11 +9,11 @@ var incorrectAnswers = [];
 
 var calledAPI = false;
 
+var tempCorrect = [];
 
-var correctAnswer = '';
-var incorrectOne = '';
-var incorrectTwo = '';
-var incorrectThree = '';
+
+var minNum = 0;
+var maxNum = 3;
 
 $.ajax({
     url: queryURL,
@@ -21,62 +21,102 @@ $.ajax({
 }).then(function (response) {
     console.log(response);
 
+    
+    
+
     for (let i = 0; i < response.results.length; i++) {
 
+        // push each question into an array
         questions.push(response.results[i].question);
 
-        var randomNum = Math.floor(Math.random() * 3);
 
-
-        correctAnswer = response.results[i].correct_answer;
-        incorrectOne = response.results[i].incorrect_answers[0];
-        incorrectTwo = response.results[i].incorrect_answers[1];
-        incorrectThree = response.results[i].incorrect_answers[2];
-
-
-        var myArray = [correctAnswer, incorrectOne, incorrectTwo, incorrectThree];
-        // change order of answers here:
-
-
-
-        answers.push(response.results[i].correct_answer,
+        answers.push(//response.results[i].correct_answer,
             response.results[i].incorrect_answers[0],
             response.results[i].incorrect_answers[1],
             response.results[i].incorrect_answers[2]
         );
 
+        // dynamically generate a random number between 0 - 3, 4 - 7, 8 - 11 etc...
+        var randomNum = Math.floor(Math.random() * (maxNum - minNum) + minNum);
+
+
+        // put correct answer somehwere in the answer order of 0 - 3, 4 - 7, 8 - 11 etc...
+        answers.splice(randomNum, 0, response.results[i].correct_answer)
+
+        // counter variables to increment by 4 to change the min random num and max random num
+        maxNum += 4;
+        minNum += 4;
+
+        // push correct answer number to temporary correct answer array
+        tempCorrect.push(randomNum);
+        
+
     }
 
-
+    // used to check api call answers
     for (let i = 0; i < answers.length; i++) {
-        // console.log(answers[i]);
-
+        
+        //console.log(answers[i]);
+            
     }
-
 
     calledAPI = true;
-
-    // console.log(myArray);
+    
 
 });
-
-
-
-// console.log(questions);
-// console.log(answers);
 
 
 
 
 /* ------------------------------------ */
 
+// initiate counter variables
 var answerCounter = 0;
 var questionCounter = 0;
 var questionCount = 10;
 
+
+
 function generateQuestionAndAnswer() {
 
-    // PUT THIS INSIDE A FUNCTION THAT GENERATES A QUESTION AND RANDOMIZES THE ANSWER ORDER
+    $('#time-remaining > tbody').empty();
+
+    // similar counting mechanism to the api min and max numbers - see above
+    var minNum2 = answerCounter;
+    var maxNum2 = minNum2 + 4;
+
+    // set correct answer to a variable that is matched to the question
+    var myCorrectAnswer = tempCorrect[questionCounter];
+    
+    // temp counter variable
+    var a = 0;
+
+    for (var y = minNum2; y < maxNum2; y++) {
+
+        if (y === myCorrectAnswer) {
+            
+            console.log(answers[myCorrectAnswer]);
+
+        } else if (y !== myCorrectAnswer && a === 1) {
+            var incorrectANS_ONE = y;
+            console.log(answers[incorrectANS_ONE]);
+            a = a + 1;
+        } else if (y !== myCorrectAnswer && a === 2) {
+            var incorrectANS_TWO = y;
+            console.log(answers[incorrectANS_TWO]);
+            a = a + 1;
+        }
+        else {
+            var incorrectANS_THREE = y;
+            console.log(answers[incorrectANS_THREE]);
+            a = a + 1;
+        }
+  
+    }
+
+    console.log('---------------------------------');
+
+
     $("#time-remaining").text("Time Remaining: " + count);
 
 
@@ -91,31 +131,83 @@ function generateQuestionAndAnswer() {
 
     // -------------------------------------------------------------------------- //
 
-    $('#time-remaining > tbody:last-child').append('<tr></tr>');
-    $('#time-remaining > tbody > tr:last-child').attr('id', 'answer');
-    $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter]);
-    console.log(answerCounter);
+    if (questionCounter === 2 || 
+        questionCounter === 7 || 
+        questionCounter === 4 || 
+        questionCounter === 9)
+    {
 
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
     $('#time-remaining > tbody > tr:last-child').attr('id', 'answer');
-    $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter + 1]);
+    $('#time-remaining > tbody > tr:last-child').text(answers[incorrectANS_TWO]);
+
+    $('#time-remaining > tbody:last-child').append('<tr></tr>');
+    $('#time-remaining > tbody > tr:last-child').attr('id', 'answer');
+    $('#time-remaining > tbody > tr:last-child').text(answers[incorrectANS_ONE]);
 
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
     $('#time-remaining > tbody > tr').attr('id', 'answer');
-    $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter + 2]);
+    $('#time-remaining > tbody > tr:last-child').text(answers[myCorrectAnswer]);
 
     $('#time-remaining > tbody:last-child').append('<tr></tr>');
     $('#time-remaining > tbody > tr').attr('id', 'answer');
-    $('#time-remaining > tbody > tr:last-child').text(answers[answerCounter + 3]);
+    $('#time-remaining > tbody > tr:last-child').text(answers[incorrectANS_THREE]);
 
 
     // add 'answer' id to all tr tags in in tbody
     $('#time-remaining > tbody > tr').attr('id', 'answer');
 
+    } else if (questionCounter === 0 || 
+        questionCounter === 3 || 
+        questionCounter === 6 || 
+        questionCounter === 8)
+    {
+
+    $('#time-remaining > tbody:last-child').append('<tr></tr>');
+    $('#time-remaining > tbody > tr:last-child').attr('id', 'answer');
+    $('#time-remaining > tbody > tr:last-child').text(answers[myCorrectAnswer]);
+
+    $('#time-remaining > tbody:last-child').append('<tr></tr>');
+    $('#time-remaining > tbody > tr:last-child').attr('id', 'answer');
+    $('#time-remaining > tbody > tr:last-child').text(answers[incorrectANS_ONE]);
+
+    $('#time-remaining > tbody:last-child').append('<tr></tr>');
+    $('#time-remaining > tbody > tr').attr('id', 'answer');
+    $('#time-remaining > tbody > tr:last-child').text(answers[incorrectANS_TWO]);
+
+    $('#time-remaining > tbody:last-child').append('<tr></tr>');
+    $('#time-remaining > tbody > tr').attr('id', 'answer');
+    $('#time-remaining > tbody > tr:last-child').text(answers[incorrectANS_THREE]);
+
+
+    }
+
+    else if (questionCounter === 1 || 
+        questionCounter === 5)
+    {
+    
+    $('#time-remaining > tbody:last-child').append('<tr></tr>');
+    $('#time-remaining > tbody > tr:last-child').attr('id', 'answer');
+    $('#time-remaining > tbody > tr:last-child').text(answers[incorrectANS_THREE]);
+
+    $('#time-remaining > tbody:last-child').append('<tr></tr>');
+    $('#time-remaining > tbody > tr:last-child').attr('id', 'answer');
+    $('#time-remaining > tbody > tr:last-child').text(answers[incorrectANS_TWO]);
+
+    $('#time-remaining > tbody:last-child').append('<tr></tr>');
+    $('#time-remaining > tbody > tr').attr('id', 'answer');
+    $('#time-remaining > tbody > tr:last-child').text(answers[incorrectANS_ONE]);
+
+    $('#time-remaining > tbody:last-child').append('<tr></tr>');
+    $('#time-remaining > tbody > tr').attr('id', 'answer');
+    $('#time-remaining > tbody > tr:last-child').text(answers[myCorrectAnswer]);
+
+    }
+
 
     // if the correct answer is clicked then display the correct answer count
     $('#time-remaining > tbody > tr').on('click', function(){
-        if ($(this).text() === answers[answerCounter]){
+        if ($(this).text() === answers[myCorrectAnswer]){
 
             // clear contents
             clearQuestionAndAnswer();
@@ -134,7 +226,7 @@ function generateQuestionAndAnswer() {
             setTimeout(whilePausedCorrect, 3000);
             
         // else if an incorrect answer is clicked then display incorrect answer count
-        } else if ($(this).text() !== answers[answerCounter]) {
+        } else if ($(this).text() !== answers[myCorrectAnswer]) {
 
             // clear contents
             clearQuestionAndAnswer();
@@ -185,8 +277,8 @@ function generateQuestionAndAnswer() {
     });
 
 
-
 };
+
 
 var correctCount = 0;
 function whilePausedCorrect() {
@@ -216,13 +308,12 @@ function whilePausedInCorrect() {
 // function to clear the Q & A section
 function clearQuestionAndAnswer() {
 
+    // clear out question and answer section
     $('#time-remaining > thead').empty();
     $('#time-remaining > tbody').empty();
 
-    
 
 }
-
 
 
 // set isStartClicked to determine if the start button was clicked
@@ -240,18 +331,16 @@ $("#start-button").on("click", function () {
     // when start button is clicked, hide it and begin counter
     $("#start-button").hide();
 
-    
     start();
-
 
 });
 
 
-
-
 // function to begin the counting for the start of the first question
 function start() {
+
     count = 5;
+
     // questionCounter += 1;
     intervalId = setInterval(countDown, 1000);
 
@@ -261,18 +350,15 @@ function start() {
 function countDown() {
 
     if (count === -1) {
+
         stop();
         console.log("times up")
-
-        
-
 
         // clear the question and answer field
         clearQuestionAndAnswer();
 
         // set count back to 5
         count = 5;
-
 
         // 4 answers for each question
         answerCounter += 4;
@@ -283,33 +369,25 @@ function countDown() {
         // generate the next question and list of answers
         generateQuestionAndAnswer();
 
-        
         // restart the countdown
         start();
 
-
     }
-
-
 
     // if start button is clicked
     if (isStartClicked) {
 
-
         // call generate question and answer function
         generateQuestionAndAnswer();
 
-
         // decrement by 1
         count--;
-
 
     }
     else {
 
         // call generate question and answer function
         generateQuestionAndAnswer();
-
 
         // decrement by 1
         count--;
@@ -323,12 +401,8 @@ function countDown() {
 
         $('#time-remaining').append('<br></br>');
 
-        // add user score here below the game over text
-
         $('#time-remaining').append("<h2 class=correctAnswers></h2>");
         $('.correctAnswers').text("Answered Correctly: " + correctCount);
-
-        
 
         $('#time-remaining').append("<h2 class=incorrectAnswers></h2>");
         $('.incorrectAnswers').text("Answered Incorrect: " + incorrectCount);
@@ -338,10 +412,7 @@ function countDown() {
         
         restartGame();
         
-        
-
     }
-
 
 
 }
@@ -351,8 +422,6 @@ function stop() {
 
     // clear the time interval
     clearInterval(intervalId);
-
-
 
     // set start button click back to zero
     isStartClicked = false;
@@ -364,12 +433,25 @@ function restartGame() {
     $('#time-remaining').append("<button class=end-btn>Click to restart</button>");
 
     $('.end-btn').on('click', function(){
+
+        // on click reset counter vars back to initial state
         answerCounter = 0;
         questionCounter = 0;
         questionCount = 10;
 
+
+        // reset users correct guesses and incorrect guesses
+        correctCount = 0;
+        incorrectCount = 0;
+
+
+        // clear out question and answer section
         clearQuestionAndAnswer();
+
+        // clear out entire time remaining area
         $('#time-remaining').empty();
+
+        // call the start function to restart the game
         start();
     });
 
