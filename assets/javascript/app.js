@@ -87,7 +87,7 @@ function generateQuestionAndAnswer() {
 
 
     $('#time-remaining').append('<tbody></tbody>');
-    $('#time-remaining > tbody:last-child').append('<br></brr>');
+    $('#time-remaining > tbody:last-child').append('<br></br>');
 
     // -------------------------------------------------------------------------- //
 
@@ -204,7 +204,7 @@ var incorrectCount = 0;
 function whilePausedInCorrect() {
 
     $('#time-remaining > div:last-child').append("<p>");
-    $('#time-remaining > div > p:last-child').text("Correct Answer: " + incorrectCount);
+    $('#time-remaining > div > p:last-child').text("Incorrect Answer: " + incorrectCount);
 
     answerCounter += 4;
     questionCounter += 1;
@@ -264,7 +264,7 @@ function countDown() {
         stop();
         console.log("times up")
 
-        // log the users guess here
+        
 
 
         // clear the question and answer field
@@ -274,11 +274,17 @@ function countDown() {
         count = 5;
 
 
+        // 4 answers for each question
         answerCounter += 4;
+
+        // add 1 to count the next question
         questionCounter += 1;
+
+        // generate the next question and list of answers
         generateQuestionAndAnswer();
 
         
+        // restart the countdown
         start();
 
 
@@ -315,8 +321,24 @@ function countDown() {
         stop();
         $("#time-remaining").text("GAME OVER!");
 
+        $('#time-remaining').append('<br></br>');
+
         // add user score here below the game over text
 
+        $('#time-remaining').append("<h2 class=correctAnswers></h2>");
+        $('.correctAnswers').text("Answered Correctly: " + correctCount);
+
+        
+
+        $('#time-remaining').append("<h2 class=incorrectAnswers></h2>");
+        $('.incorrectAnswers').text("Answered Incorrect: " + incorrectCount);
+
+        $('#time-remaining').append("<h3 class=percentage></h3>");
+        $('.percentage').text('Score: ' + ((correctCount / questionCount) * 100)  + '%');
+        
+        restartGame();
+        
+        
 
     }
 
@@ -338,4 +360,17 @@ function stop() {
 }
 
 
+function restartGame() {
+    $('#time-remaining').append("<button class=end-btn>Click to restart</button>");
 
+    $('.end-btn').on('click', function(){
+        answerCounter = 0;
+        questionCounter = 0;
+        questionCount = 10;
+
+        clearQuestionAndAnswer();
+        $('#time-remaining').empty();
+        start();
+    });
+
+};
